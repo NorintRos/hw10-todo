@@ -1,1 +1,38 @@
-{{!-- Placeholder: main index view. --}}
+<h1>Todo List</h1>
+
+<!-- Create -->
+<form class="add-form" action="/todos" method="POST">
+  <input type="text" name="text" placeholder="What needs to be done?" required />
+  <button type="submit">Add</button>
+</form>
+
+<!-- List -->
+{{#if todos.length}}
+  {{#each todos}}
+  <div class="todo-item">
+
+    <span class="{{#if this.completed}}completed{{/if}}">{{this.text}}</span>
+
+    <!-- Toggle complete -->
+    <form action="/todos/{{this.id}}/complete" method="POST">
+      <input type="hidden" name="completed"
+        value="{{#if this.completed}}false{{else}}true{{/if}}" />
+      <button type="submit">{{#if this.completed}}Undo{{else}}Done{{/if}}</button>
+    </form>
+
+    <!-- Edit text -->
+    <form action="/todos/{{this.id}}/edit" method="POST">
+      <input type="text" name="text" value="{{this.text}}" />
+      <button type="submit">Save</button>
+    </form>
+
+    <!-- Delete -->
+    <form action="/todos/{{this.id}}/delete" method="POST">
+      <button type="submit">Delete</button>
+    </form>
+
+  </div>
+  {{/each}}
+{{else}}
+  <p>No todos yet. Add one above.</p>
+{{/if}}
