@@ -20,6 +20,10 @@ function createApp(db) {
   // Static files
   app.use(express.static('public'));
 
+  // Trust proxy (Railway, Render, etc. terminate SSL at the proxy)
+  app.set('trust proxy', 1);
+  app.disable('x-powered-by');
+
   // Body parsing
   app.use(express.urlencoded({ extended: false }));
   app.use(session({
