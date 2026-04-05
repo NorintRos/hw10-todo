@@ -11,28 +11,31 @@
   {{#each todos}}
   <div class="todo-item">
 
-    <span class="{{#if this.completed}}completed{{/if}}">{{this.text}}</span>
-
     <!-- Toggle complete -->
-    <form action="/todos/{{this.id}}/complete" method="POST">
+    <form class="toggle-form" action="/todos/{{this.id}}/complete" method="POST">
       <input type="hidden" name="completed"
         value="{{#if this.completed}}false{{else}}true{{/if}}" />
-      <button type="submit">{{#if this.completed}}Undo{{else}}Done{{/if}}</button>
+      <button type="submit" class="toggle-btn {{#if this.completed}}is-completed{{/if}}">{{#if this.completed}}&#9679;{{else}}&#9675;{{/if}}</button>
     </form>
 
-    <!-- Edit text -->
-    <form action="/todos/{{this.id}}/edit" method="POST">
-      <input type="text" name="text" value="{{this.text}}" />
-      <button type="submit">Save</button>
-    </form>
+    <span class="todo-text {{#if this.completed}}completed{{/if}}">{{this.text}}</span>
+
+    <!-- Action buttons -->
+    <button type="button" class="edit-toggle">Edit</button>
 
     <!-- Delete -->
-    <form action="/todos/{{this.id}}/delete" method="POST">
-      <button type="submit">Delete</button>
+    <form class="delete-form" action="/todos/{{this.id}}/delete" method="POST">
+      <button type="submit" class="delete-btn">Delete</button>
+    </form>
+
+    <!-- Edit text (visible without JS, hidden with JS until toggled) -->
+    <form class="edit-form" action="/todos/{{this.id}}/edit" method="POST">
+      <input type="text" name="text" value="{{this.text}}" />
+      <button type="submit">Save</button>
     </form>
 
   </div>
   {{/each}}
 {{else}}
-  <p>No todos yet. Add one above.</p>
+  <p class="empty-state">No todos yet. Add one above.</p>
 {{/if}}

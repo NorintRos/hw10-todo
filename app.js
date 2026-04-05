@@ -17,6 +17,9 @@ function createApp(db) {
   app.set('view engine', 'handlebars');
   app.set('views', './views');
 
+  // Static files
+  app.use(express.static('public'));
+
   // Body parsing
   app.use(express.urlencoded({ extended: false }));
   app.use(session({

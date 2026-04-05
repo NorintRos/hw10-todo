@@ -1,0 +1,396 @@
+/* ============================================
+   Dark & Minimal Todo App
+   ============================================ */
+
+/* --- Custom Properties --- */
+:root {
+  --bg-primary:     #0a0a0a;
+  --bg-surface:     #141414;
+  --bg-input:       #1a1a1a;
+  --border:         #2a2a2a;
+  --border-focus:   #3a3a3a;
+  --text-primary:   #e0e0e0;
+  --text-secondary: #777;
+  --text-dimmed:    #4a4a4a;
+  --accent:         #00ffc8;
+  --accent-hover:   #00e6b4;
+  --error:          #ff4d4d;
+  --error-bg:       rgba(255, 77, 77, 0.06);
+  --font-mono:      'JetBrains Mono', monospace;
+  --font-sans:      'DM Sans', sans-serif;
+  --radius:         4px;
+  --transition:     0.2s ease;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 20px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity var(--transition);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* --- Header --- */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  margin-bottom: 36px;
+}
+
+.session-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.session-meta p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.page-header button {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.page-header button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* --- Headings --- */
+h1 {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  margin-bottom: 28px;
+}
+
+/* --- Add Todo Form --- */
+.add-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.add-form input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.add-form input:focus {
+  border-color: var(--accent);
+}
+
+.add-form input::placeholder {
+  color: var(--text-dimmed);
+}
+
+.add-form button {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background var(--transition), color var(--transition);
+}
+
+.add-form button:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* --- Todo Items --- */
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.todo-item:first-of-type {
+  border-top: 1px solid var(--border);
+}
+
+/* Toggle button (circle) */
+.toggle-form {
+  display: flex;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+.toggle-btn:hover {
+  color: var(--accent);
+}
+
+.toggle-btn.is-completed {
+  color: var(--accent);
+}
+
+/* Todo text */
+.todo-text {
+  flex: 1;
+  font-size: 15px;
+  min-width: 0;
+}
+
+.todo-text.completed {
+  text-decoration: line-through;
+  color: var(--text-dimmed);
+}
+
+/* Action buttons */
+.edit-toggle,
+.delete-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  transition: color var(--transition), background var(--transition);
+}
+
+.edit-toggle:hover {
+  color: var(--accent);
+  background: rgba(0, 255, 200, 0.06);
+}
+
+.delete-btn:hover {
+  color: var(--error);
+  background: var(--error-bg);
+}
+
+.delete-form {
+  display: flex;
+}
+
+/* Edit form */
+.edit-form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  flex-basis: 100%;
+  margin-top: 8px;
+}
+
+/* With JS active, hide edit forms by default */
+.js-enabled .edit-form {
+  display: none;
+}
+
+/* Show when editing */
+.js-enabled .todo-item.editing .edit-form {
+  display: flex;
+}
+
+.edit-form input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.edit-form input:focus {
+  border-color: var(--accent);
+}
+
+.edit-form button {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+}
+
+.edit-form button:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* --- Fade Out Animation --- */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+  pointer-events: none;
+}
+
+/* --- Empty State --- */
+.empty-state {
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 24px 0;
+  font-size: 14px;
+}
+
+/* --- Auth Container --- */
+.auth-container {
+  max-width: 380px;
+  margin: 60px auto 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+
+.auth-container h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+/* --- Auth Form --- */
+.auth-form {
+  display: grid;
+  gap: 20px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.auth-form input {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--font-sans);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.auth-form input:focus {
+  border-color: var(--accent);
+}
+
+.auth-form button {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: var(--radius);
+  margin-top: 4px;
+  transition: background var(--transition), color var(--transition);
+}
+
+.auth-form button:hover {
+  background: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* --- Auth Switch --- */
+.auth-switch {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* --- Error Message --- */
+.error {
+  color: var(--error);
+  font-size: 14px;
+  font-family: var(--font-mono);
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  border-radius: var(--radius);
+  background: var(--error-bg);
+  margin-bottom: 20px;
+}

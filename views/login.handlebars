@@ -1,21 +1,23 @@
-<h1>Login</h1>
+<div class="auth-container">
+  <h1>Login</h1>
 
-{{#if error}}
-  <p class="error">{{error}}</p>
-{{/if}}
+  {{#if error}}
+    <p class="error">{{error}}</p>
+  {{/if}}
 
-<form class="auth-form" action="/login" method="POST">
-  <label>
-    Email
-    <input type="email" name="email" value="{{email}}" required />
-  </label>
+  <form class="auth-form" action="/login" method="POST">
+    <label>
+      Email
+      <input type="email" name="email" value="{{email}}" required />
+    </label>
 
-  <label>
-    Password
-    <input type="password" name="password" required />
-  </label>
+    <label>
+      Password
+      <input type="password" name="password" required />
+    </label>
 
-  <button type="submit">Login</button>
-</form>
+    <button type="submit">Login</button>
+  </form>
 
-<p class="auth-switch">Need an account? <a href="/signup">Sign up</a></p>
+  <p class="auth-switch">Need an account? <a href="/signup">Sign up</a></p>
+</div>
