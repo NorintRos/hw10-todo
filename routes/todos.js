@@ -1,10 +1,14 @@
 const express = require('express');
-const router  = express.Router();
+const { requireAuth } = require('../lib/auth/middleware');
+
+const router = express.Router();
+
+router.use(requireAuth);
 
 // GET / — display all todos
 router.get('/', async (req, res) => {
   try {
-    const todos = await req.app.locals.db.getTodos();
+    const todos = await req.app.locals.db.getTodos(res.locals.currentUser.id);
     res.render('index', { todos });
   } catch (err) {
     console.error(err);
@@ -17,7 +21,7 @@ router.post('/todos', async (req, res) => {
   try {
     const { text } = req.body;
     if (!text || !text.trim()) return res.redirect('/');
-    await req.app.locals.db.createTodo(text.trim());
+    await req.app.locals.db.createTodo(res.locals.currentUser.id, text.trim());
     res.redirect('/');
   } catch (err) {
     console.error(err);
@@ -30,7 +34,7 @@ router.post('/todos/:id/complete', async (req, res) => {
   try {
     const { id }        = req.params;
     const { completed } = req.body;
-    await req.app.locals.db.updateTodo(id, {
+    await req.app.locals.db.updateTodo(res.locals.currentUser.id, id, {
       completed: completed === 'true'
     });
     res.redirect('/');
@@ -46,7 +50,9 @@ router.post('/todos/:id/edit', async (req, res) => {
     const { id }   = req.params;
     const { text } = req.body;
     if (!text || !text.trim()) return res.redirect('/');
-    await req.app.locals.db.updateTodo(id, { text: text.trim() });
+    await req.app.locals.db.updateTodo(res.locals.currentUser.id, id, {
+      text: text.trim()
+    });
     res.redirect('/');
   } catch (err) {
     console.error(err);
@@ -57,7 +63,7 @@ router.post('/todos/:id/edit', async (req, res) => {
 // POST /todos/:id/delete — delete a todo
 router.post('/todos/:id/delete', async (req, res) => {
   try {
-    await req.app.locals.db.deleteTodo(req.params.id);
+    await req.app.locals.db.deleteTodo(res.locals.currentUser.id, req.params.id);
     res.redirect('/');
   } catch (err) {
     console.error(err);
